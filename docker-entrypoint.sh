@@ -13,9 +13,17 @@ if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force || true
 fi
 
-# Migraciones si hay conexión configurada
-if [ -n "$DB_HOST" ]; then
-    echo "Ejecutando migraciones de base de datos..."
+# Migraciones y Base de Datos (SQLite automático si no hay DB_HOST externo)
+if [ -z "$DB_HOST" ]; then
+    echo "Configurando base de datos local SQLite para Render..."
+    mkdir -p /var/www/html/database
+    touch /var/www/html/database/database.sqlite
+    chown -R www-data:www-data /var/www/html/database
+    chmod -R 777 /var/www/html/database
+    php artisan migrate --force || true
+    php artisan db:seed --force || true
+else
+    echo "Conectando a base de datos remota ($DB_HOST)..."
     php artisan migrate --force || true
 fi
 
