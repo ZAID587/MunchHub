@@ -15,6 +15,12 @@ return new class extends Migration
             if (!Schema::hasColumn('users', 'role')) {
                 $table->string('role')->default('cliente')->after('email');
             }
+            if (!Schema::hasColumn('users', 'username')) {
+                $table->string('username')->nullable()->after('name');
+            }
+            if (!Schema::hasColumn('users', 'apellido')) {
+                $table->string('apellido')->nullable()->after('username');
+            }
             if (!Schema::hasColumn('users', 'edad')) {
                 $table->integer('edad')->nullable()->after('role');
             }
@@ -23,6 +29,9 @@ return new class extends Migration
             }
             if (!Schema::hasColumn('users', 'telefono')) {
                 $table->string('telefono')->nullable()->after('avatar');
+            }
+            if (!Schema::hasColumn('users', 'localidad')) {
+                $table->string('localidad')->nullable()->after('telefono');
             }
         });
     }
@@ -33,7 +42,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['role', 'edad', 'avatar', 'telefono']);
+            $table->dropColumn(['role', 'username', 'apellido', 'edad', 'avatar', 'telefono', 'localidad']);
         });
     }
 };
