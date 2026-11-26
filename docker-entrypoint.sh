@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e
 
-# Asegurar directorios de almacenamiento
+# Asegurar directorios de almacenamiento y permisos totales
 mkdir -p /var/www/html/storage/framework/{sessions,views,cache} /var/www/html/storage/logs
+touch /var/www/html/storage/logs/laravel.log || true
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Generar clave si no existe
 if [ -z "$APP_KEY" ]; then
